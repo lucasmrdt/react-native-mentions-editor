@@ -305,11 +305,16 @@ export class Editor extends React.Component {
     this.setState({ selection: newSelc });
   };
 
-  formatMentionNode = (txt, key) => (
-    <Text key={key} style={styles.mention}>
-      {txt}
-    </Text>
-  );
+  formatMentionNode = (txt, key) => {
+    const { props, state } = this;
+    const { editorStyles = {} } = props;
+
+    return (
+      <Text key={key} style={[styles.mention, editorStyles.mention]}>
+        {txt}
+      </Text>
+    )
+  };
 
   formatText(inputText) {
     /**
@@ -500,7 +505,7 @@ export class Editor extends React.Component {
 
   render() {
     const { props, state } = this;
-    const { editorStyles = {} } = props;
+    const { editorStyles = {}, scrollViewProps = {}, inputProps = {} } = props;
 
     if (!props.showEditor) return null;
 
@@ -534,8 +539,9 @@ export class Editor extends React.Component {
               this.scroll.scrollToEnd({ animated: true });
             }}
             style={[styles.editorContainer, editorStyles.editorContainer]}
+            {...scrollViewProps}
           >
-            <View style={[{ height: this.state.editorHeight }]}>
+            <View >
               <View
                 style={[
                   styles.formmatedTextWrapper,
@@ -563,7 +569,6 @@ export class Editor extends React.Component {
                 ref={input => props.onRef && props.onRef(input)}
                 style={[styles.input, editorStyles.input]}
                 multiline
-                autoFocus
                 numberOfLines={100}
                 name={"message"}
                 value={state.inputText}
@@ -575,6 +580,7 @@ export class Editor extends React.Component {
                 placeholder={state.placeholder}
                 onContentSizeChange={this.onContentSizeChange}
                 scrollEnabled={false}
+                {...inputProps}
               />
             </View>
           </ScrollView>
