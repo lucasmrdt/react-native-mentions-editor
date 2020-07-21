@@ -513,7 +513,7 @@ export class Editor extends React.Component {
     };
 
     return (
-      <View styles={editorStyles.mainContainer}>
+      <>
         {props.renderMentionList ? (
           props.renderMentionList(mentionListProps)
         ) : (
@@ -579,7 +579,7 @@ export class Editor extends React.Component {
             </View>
           </ScrollView>
         </View>
-      </View>
+      </>
     );
   }
 }
